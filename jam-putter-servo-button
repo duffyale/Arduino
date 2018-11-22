@@ -1,0 +1,147 @@
+// Sketch
+
+#include <Servo.h>  // add servo library
+//define all pins 
+#define sw1_pin 6 
+#define sw2_pin 5
+#define sw3_pin 3
+#define sw4_pin 2
+
+Servo myservo;  // create servo object to control a servo
+Servo myservo2; // create servo object to control thet second servo 
+int a = 0;
+
+//volatile directs compiler to load variable from RAM 
+volatile boolean sw1 = false;
+volatile boolean sw2 = false;
+volatile boolean sw3 = false;
+volatile boolean sw4 = false;
+
+//set intial button state to off  
+uint8_t sw1ButtonState = 0;
+uint8_t sw2ButtonState = 0;
+uint8_t sw3ButtonState = 0;
+uint8_t sw4ButtonState = 0;
+
+//set last final state to off
+uint8_t lastsw1ButtonState = 0;
+uint8_t lastsw2ButtonState = 0;
+uint8_t lastsw3ButtonState = 0;
+uint8_t lastsw4ButtonState = 0;
+
+void setup() {
+  //initialize serial communication 
+  Serial.begin(9600);
+  //access the 20K pullup resistors in the chip 
+  //set pin to input 
+  pinMode(sw1_pin, INPUT_PULLUP);
+  pinMode(sw2_pin, INPUT_PULLUP);
+  pinMode(sw3_pin, INPUT_PULLUP);
+  pinMode(sw4_pin, INPUT_PULLUP);
+  myservo.attach(9);  // attaches the servo on pin 9 to the servo object
+  myservo2.attach(10); // attaches the second servo on pin 10 to the servo object
+}
+
+void loop() {
+  
+    // run all 4 function to check if the Buttons are pressed 
+     checkIfButton1IsPressed();
+     checkIfButton2IsPressed();
+     checkIfButton3IsPressed();
+     checkIfButton4IsPressed();
+     //when sw1 is true, the button is activated 
+     if(sw1){
+      Serial.println("sw1");
+       sw1 = false;
+       myservo.write(140);
+       myservo2.write(40);
+       delay(150);
+       myservo2.write(155);
+       delay(15);
+     }
+     else if(sw2){
+      Serial.println("sw2");
+       sw2 = false;
+       myservo.write(90);
+       myservo2.write(35);
+       delay(150);
+       
+     }else if(sw3){
+      Serial.println("sw3");
+       sw3 = false;
+       myservo.write(40);
+       delay(150);
+       myservo.write(60);
+       delay(150);
+       myservo2.write(185);
+       
+     }else if(sw4){
+      Serial.println("sw4");
+       sw4 = false;
+       for(a=0;a<20;a--){
+         myservo.write(a);
+       }}
+}
+
+//function that check the state of the button 
+void checkIfButton1IsPressed()
+{
+  //read the input pin of push button 
+    sw1ButtonState   = digitalRead(sw1_pin);
+  
+  // compare current state to previous state 
+    if (sw1ButtonState != lastsw1ButtonState)
+  { // if state change, set sw1 to true 
+    if ( sw1ButtonState == 1)
+    { // if current state is 1 set sw1 = true 
+      sw1=true;
+    }
+    delay(20);
+  }
+   lastsw1ButtonState = sw1ButtonState;
+ }
+
+void checkIfButton2IsPressed()
+{
+    sw2ButtonState   = digitalRead(sw2_pin);
+  
+    if (sw2ButtonState != lastsw2ButtonState)
+  {
+    if ( sw2ButtonState == 1)
+    {
+      sw2=true;
+    }
+    delay(20);
+  }
+   lastsw2ButtonState = sw2ButtonState;
+ }
+ 
+ void checkIfButton3IsPressed()
+{
+    sw3ButtonState   = digitalRead(sw3_pin);
+  
+    if (sw3ButtonState != lastsw3ButtonState)
+  {
+    if ( sw3ButtonState == 1)
+    {
+      sw3=true;
+    }
+    delay(20);
+  }
+   lastsw3ButtonState = sw3ButtonState;
+ }
+ 
+ void checkIfButton4IsPressed()
+{
+    sw4ButtonState   = digitalRead(sw4_pin);
+  
+    if (sw4ButtonState != lastsw4ButtonState)
+  {
+    if ( sw4ButtonState == 1)
+    {
+      sw4=true;
+    }
+    delay(20);
+  }
+   lastsw4ButtonState = sw4ButtonState;
+ }
