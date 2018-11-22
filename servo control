@@ -1,0 +1,130 @@
+// Sketch
+
+#include <Servo.h>  // add servo library
+#define sw1_pin 6
+#define sw2_pin 5
+#define sw3_pin 3
+#define sw4_pin 2
+
+Servo myservo;  // create servo object to control a servo
+Servo myservo2;
+int val = 0;
+int a =70;
+int b = 0;
+int c = 80;
+volatile boolean sw1 = false;
+volatile boolean sw2 = false;
+volatile boolean sw3 = false;
+volatile boolean sw4 = false;
+
+uint8_t sw1ButtonState = 0;
+uint8_t sw2ButtonState = 0;
+uint8_t sw3ButtonState = 0;
+uint8_t sw4ButtonState = 0;
+
+uint8_t lastsw1ButtonState = 0;
+uint8_t lastsw2ButtonState = 0;
+uint8_t lastsw3ButtonState = 0;
+uint8_t lastsw4ButtonState = 0;
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(sw1_pin, INPUT_PULLUP);
+  pinMode(sw2_pin, INPUT_PULLUP);
+  pinMode(sw3_pin, INPUT_PULLUP);
+  pinMode(sw4_pin, INPUT_PULLUP);
+  myservo.attach(9);  // attaches the servo on pin 9 to the servo object
+  myservo2.attach(10); // attaches the second servo on pin 10 to the servo object
+}
+
+void loop() {
+     val = digitalRead(sw1_pin);
+     checkIfSw1ButtonIsPressed();
+     checkIfSw2ButtonIsPressed();
+     checkIfSw3ButtonIsPressed();
+     checkIfSw4ButtonIsPressed();
+     
+    if(sw1){
+       Serial.println("sw1");
+       sw1 = false;
+      for(b=0;b<10;b++){
+      myservo.write(a++);
+      delay(40);}
+    }else if(sw2){
+      Serial.println("sw2");
+      sw2=false; 
+      for(b=0;b<10;b++){
+        myservo.write(a--);
+        delay(40);
+      }
+    }else if(sw3){
+      Serial.println("sw4");
+      sw3=false; 
+      for(b=0;b<10;b++){
+        myservo2.write(c++);
+        delay(40);
+      }
+    }else if(sw4){
+      Serial.println("sw4");
+      sw4=false; 
+      for(b=0;b<10;b++){
+        myservo2.write(c--);
+        delay(40);
+      }
+    }
+                            // waits for the servo to get there
+}
+
+void checkIfSw1ButtonIsPressed()
+{
+    sw1ButtonState   = digitalRead(sw1_pin);
+  
+    if ( sw1ButtonState == 0)
+    {
+      sw1=true;
+    
+    delay(20);
+  }
+   lastsw1ButtonState = sw1ButtonState;
+ }
+
+void checkIfSw2ButtonIsPressed()
+{
+    sw2ButtonState   = digitalRead(sw2_pin);
+  
+    if ( sw2ButtonState == 0)
+    {
+      sw2=true;
+    
+    delay(20);
+  }
+   lastsw2ButtonState = sw2ButtonState;
+ }
+ 
+ void checkIfSw3ButtonIsPressed()
+{
+    sw3ButtonState   = digitalRead(sw3_pin);
+  
+  
+    if ( sw3ButtonState == 0)
+    {
+      sw3=true;
+    
+    delay(20);
+  }
+   lastsw3ButtonState = sw3ButtonState;
+ }
+ 
+ void checkIfSw4ButtonIsPressed()
+{
+    sw4ButtonState   = digitalRead(sw4_pin);
+  
+  
+    if ( sw4ButtonState == 0)
+    {
+      sw4=true;
+    
+    delay(20);
+  }
+   lastsw4ButtonState = sw4ButtonState;
+ }
